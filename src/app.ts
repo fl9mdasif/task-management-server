@@ -16,15 +16,15 @@ app.use(cors());
 app.use("/api", router);
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("Hello from course management");
+  res.send("Hello from Task management");
 });
 
-const test = async (req: Request, res: Response) => {
-  const a = 10;
-  res.send(a);
-};
+// const test = async (req: Request, res: Response) => {
+//   const a = 10;
+//   res.send(a);
+// };
 
-app.get("/a", test);
+// app.get("/a", test);
 // not found middleware with http-status
 
 app.use(notFound);

@@ -1,32 +1,31 @@
-import express from 'express';
-import validateRequest from '../../middlewares/validateRequest';
-import { userControllers } from '../user/controller.user';
-import { userZodValidationSchema } from '../user/validation.user';
-import { authValidations } from './validation.auth';
-import { authControllers } from './controller.auth';
-import { USER_ROLE } from '../user/constant.user';
-import auth from '../../middlewares/auth';
+import express from "express";
+import validateRequest from "../../middlewares/validateRequest";
+import { authValidations } from "./validation.auth";
+import { authControllers } from "./controller.auth";
+
+import auth from "../../middlewares/auth";
+import { USER_ROLE } from "./constant.auth";
 
 const router = express.Router();
 
 // register a user
 router.post(
-  '/register',
-  validateRequest(userZodValidationSchema.userRegistrationValidation),
-  userControllers.registerUser,
+  "/register",
+  validateRequest(authValidations.userRegistrationValidation),
+  authControllers.registerUser
 );
 
 // login a user
 router.post(
-  '/login',
+  "/login",
   validateRequest(authValidations.loginValidationSchema),
-  authControllers.loginUser,
+  authControllers.loginUser
 );
 
 router.post(
-  '/change-password',
+  "/change-password",
   auth(USER_ROLE.admin, USER_ROLE.user),
   validateRequest(authValidations.changePasswordValidationSchema),
-  authControllers.changePassword,
+  authControllers.changePassword
 );
-export const userRoute = router;
+export const authRouter = router;
