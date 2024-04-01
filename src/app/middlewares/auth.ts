@@ -1,11 +1,11 @@
-import { NextFunction, Request, Response } from 'express';
-import catchAsync from '../utils/catchAsync';
-import httpStatus from 'http-status';
-import config from '../config';
-import jwt, { JwtPayload } from 'jsonwebtoken';
-import AppError from '../errors/AppError';
-import { User } from '../modules/user/mode.user';
-import { TUserRole } from '../modules/user/interface.user';
+import { NextFunction, Request, Response } from "express";
+import catchAsync from "../utils/catchAsync";
+import httpStatus from "http-status";
+import config from "../config";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import AppError from "../errors/AppError";
+import { TUserRole } from "../modules/auth/interface.auth";
+import { User } from "../modules/auth/model.auth";
 
 const auth = (...requiredRoles: TUserRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
@@ -15,15 +15,15 @@ const auth = (...requiredRoles: TUserRole[]) => {
     if (!token) {
       throw new AppError(
         httpStatus.UNAUTHORIZED,
-        'You do not have the necessary permissions to access this resource.', // details
-        'Unauthorized Access', // message
+        "You do not have the necessary permissions to access this resource.", // details
+        "Unauthorized Access" // message
       );
     }
 
     // checking if the given token is valid
     const decoded = jwt.verify(
       token,
-      config.jwt_access_secret as string,
+      config.jwt_access_secret as string
     ) as JwtPayload;
 
     const { role, username, iat } = decoded;
@@ -34,8 +34,8 @@ const auth = (...requiredRoles: TUserRole[]) => {
     if (!user) {
       throw new AppError(
         httpStatus.NOT_FOUND,
-        'This user is not found !',
-        'No user found with the id',
+        "This user is not found !",
+        "No user found with the id"
       );
     }
 
@@ -44,13 +44,13 @@ const auth = (...requiredRoles: TUserRole[]) => {
       user.passwordChangedAt &&
       User.isJWTIssuedBeforePasswordChanged(
         user.passwordChangedAt,
-        iat as number,
+        iat as number
       )
     ) {
       throw new AppError(
         httpStatus.UNAUTHORIZED,
-        'You do not have the necessary permissions to access this resource.',
-        'Unauthorized Access',
+        "You do not have the necessary permissions to access this resource.",
+        "Unauthorized Access"
       );
     }
 
@@ -58,7 +58,7 @@ const auth = (...requiredRoles: TUserRole[]) => {
       throw new AppError(
         httpStatus.UNAUTHORIZED,
         `'${role}' is are not authorized`,
-        'You do not have the necessary permissions to access this resource.',
+        "You do not have the necessary permissions to access this resource."
       );
     }
 

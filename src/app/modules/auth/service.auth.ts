@@ -1,12 +1,11 @@
 import httpStatus from "http-status";
-import { User } from "../user/mode.user";
-import { TLoginUser } from "./interface.auth";
+import { TLoginUser, TUser } from "./interface.auth";
 import AppError from "../../errors/AppError";
 import config from "../../config";
 import { createToken } from "./utils.auth";
 import { JwtPayload } from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { TUser } from "../user/interface.user";
+import { User } from "./model.auth";
 
 const registerUser = async (payload: TUser) => {
   // create

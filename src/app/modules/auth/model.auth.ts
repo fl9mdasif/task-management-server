@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
-import { TUser, UserModel } from "./interface.user";
 import bcrypt from "bcrypt";
 import config from "../../config";
+import { TUser, UserModel } from "./interface.auth";
 
 const userSchema = new Schema<TUser, UserModel>(
   {
@@ -22,7 +22,7 @@ const userSchema = new Schema<TUser, UserModel>(
     },
     role: {
       type: String,
-      enum: ["user", "admin"],
+      enum: ["user"],
       required: true,
     },
 
@@ -40,7 +40,7 @@ userSchema.pre("save", async function (next) {
   // Store hash in your password DB.
 
   user.password = await bcrypt.hash(
-    user.password,
+    user.password as string,
     Number(config.bcrypt_salt_rounds)
   );
   next();
