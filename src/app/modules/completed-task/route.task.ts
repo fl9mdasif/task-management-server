@@ -32,6 +32,4 @@ router.get("/", TaskController.getAllTasks);
 // get single tasks
 router.get("/:taskId", TaskController.getSingleTask);
 
-router.get("/:userId/getUserTask", TaskController.getUserTask);
-
-export const taskRouter = router;
+export const completedTaskRouter = router;

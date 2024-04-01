@@ -2,7 +2,6 @@ import httpStatus from "http-status";
 import { TTask } from "./interface.task";
 import { Task } from "./model.task";
 import AppError from "../../errors/AppError";
-import { User } from "../auth/model.auth";
 
 // create user
 const createTask = async (payload: TTask) => {
@@ -81,25 +80,6 @@ const getSingleTask = async (id: string) => {
   return singleTask;
 };
 
-const getUserTasks = async (id: string) => {
-  // console.log(id);
-
-  const user = await User.findById(id).lean();
-
-  // console.log(user);
-
-  // get user tasks
-  const tasks = await Task.find({ authorId: id });
-
-  // .populate("authorId", "-password -createdAt -updatedAt -__v")
-  // .lean();
-  console.log(tasks);
-
-  // const userWithTasks = { tasks: [...tasks] };
-  // console.log( courseWithReviews);
-  // return userWithTasks;
-};
-
 // delete task
 const deleteTask = async (ids: string[]) => {
   const deleteTask = await Task.deleteMany({ _id: { $in: ids } });
@@ -112,5 +92,4 @@ export const TaskService = {
   updateTask,
   getSingleTask,
   deleteTask,
-  getUserTasks,
 };
