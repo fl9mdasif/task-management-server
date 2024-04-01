@@ -7,8 +7,8 @@ import { JwtPayload } from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { User } from "./model.auth";
 
+// create user
 const registerUser = async (payload: TUser) => {
-  // create
   const register = await User.create(payload);
   return register;
 };
@@ -19,7 +19,11 @@ const loginUser = async (payload: TLoginUser) => {
   const user = await User.isUserExists(payload.username);
   // console.log(user);
   if (!user) {
-    throw new AppError(httpStatus.NOT_FOUND, "", `This user is not found !'`);
+    throw new AppError(
+      httpStatus.NOT_FOUND,
+      "This user is not found !'",
+      `login stack`
+    );
   }
 
   //   2. checking if the password is correct
