@@ -16,10 +16,19 @@ router.post(
 // update task
 router.put(
   "/:taskId",
-  validateRequest(TaskValidationSchema.createTaskValidation),
-  TaskController.createTask
+  validateRequest(TaskValidationSchema.updateTaskValidation),
+  TaskController.updateTask
 );
+
+// delete tasks
+router.delete("/tasksIds", TaskController.deleteTask);
+
 // router.get("/", auth(USER_ROLE.user), TaskController.getAllTasks);
+
+// get all tasks
 router.get("/", TaskController.getAllTasks);
+
+// get single tasks
+router.get("/:taskId", TaskController.getSingleTask);
 
 export const taskRouter = router;

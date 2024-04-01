@@ -47,7 +47,56 @@ const getAllTasks = catchAsync(async (req, res) => {
   });
 });
 
+// delete Task
+const deleteTask = catchAsync(async (req, res) => {
+  const taskIds = req.body as string[];
+  console.log({ taskIds });
+
+  const result = await TaskService.deleteTask(taskIds);
+
+  response.createSendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Task deleted successfully",
+    data: result,
+  });
+});
+
+// Get singleTask
+const getSingleTask = catchAsync(async (req, res) => {
+  const { taskId } = req.params;
+
+  const result = await TaskService.getSingleTask(taskId);
+
+  response.createSendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Task retrieved successfully",
+    data: result,
+  });
+});
+
+// update
+const updateTask = catchAsync(async (req, res) => {
+  const { taskId } = req.params;
+  // console.log(taskId);
+  const updatedData = req.body;
+
+  const result = await TaskService.updateTask(taskId, updatedData);
+  // console.log('res', result);
+
+  response.createSendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Product updated successfully",
+    data: result,
+  });
+});
+
 export const TaskController = {
   createTask,
   getAllTasks,
+  deleteTask,
+  getSingleTask,
+  updateTask,
 };
