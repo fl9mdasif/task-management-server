@@ -1,5 +1,7 @@
+import httpStatus from "http-status";
 import { TTask } from "./interface.task";
 import { Task } from "./model.task";
+import AppError from "../../errors/AppError";
 
 // create user
 const createTask = async (payload: TTask) => {
@@ -46,7 +48,48 @@ const getAllTasks = async (payload: Record<string, unknown>) => {
   }
 };
 
+// update
+const updateTask = async (id: string, updatedData: Partial<TTask>) => {
+  // console.log(id);
+
+  // Basic update primitive fields
+  const updateTaskInfo = await Task.findOneAndUpdate(
+    { _id: id },
+
+    { $set: updatedData },
+    { upsert: true, new: true, runValidators: true }
+  );
+
+  if (!updateTaskInfo) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "Failed to update basic product",
+      "shoe update"
+    );
+  }
+
+  const result = await Task.findById({ _id: id });
+
+  return result;
+};
+
+// getSingle task
+const getSingleTask = async (id: string) => {
+  const singleTask = await Task.findById({ _id: id });
+
+  return singleTask;
+};
+
+// delete task
+const deleteTask = async (ids: string[]) => {
+  const deleteTask = await Task.deleteMany({ _id: { $in: ids } });
+  return deleteTask;
+};
+
 export const TaskService = {
   createTask,
   getAllTasks,
+  updateTask,
+  getSingleTask,
+  deleteTask,
 };
