@@ -3,6 +3,7 @@ import { TTask } from "./interface.task";
 import { Task } from "./model.task";
 import AppError from "../../errors/AppError";
 import { User } from "../auth/model.auth";
+import mongoose, { isValidObjectId, Types } from "mongoose";
 
 // create user
 const createTask = async (payload: TTask) => {
@@ -82,22 +83,14 @@ const getSingleTask = async (id: string) => {
 };
 
 const getUserTasks = async (id: string) => {
-  // console.log(id);
-
-  const user = await User.findById(id).lean();
-
   // console.log(user);
+  const tasks = await Task.aggregate([
+    {
+      $match: { authorId: id }, // Match tasks with the specified authorId
+    },
+  ]);
 
-  // get user tasks
-  const tasks = await Task.find({ authorId: id });
-
-  // .populate("authorId", "-password -createdAt -updatedAt -__v")
-  // .lean();
-  console.log(tasks);
-
-  // const userWithTasks = { tasks: [...tasks] };
-  // console.log( courseWithReviews);
-  // return userWithTasks;
+  return tasks;
 };
 
 // delete task

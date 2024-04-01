@@ -94,15 +94,15 @@ const updateTask = catchAsync(async (req, res) => {
 });
 
 const getUserTask = catchAsync(async (req, res) => {
-  const { userId } = req.params;
-  // console.log({ courseId });
+  const { authorId } = req.params;
+  // console.log({ userId });
 
-  const tasks = await TaskService.getUserTasks(userId);
+  const tasks = await TaskService.getUserTasks(authorId);
   response.createSendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "User and tasks retrieved successfully",
-    data: { tasks },
+    data: tasks,
   });
 });
 

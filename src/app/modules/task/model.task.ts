@@ -13,8 +13,8 @@ const taskSchema = new Schema<TTask>(
     deadline: { type: Date, required: true },
     isCompleted: { type: Boolean, default: false },
     authorId: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
+      // type: Schema.Types.ObjectId,
+      type: String,
       required: true,
     },
   },

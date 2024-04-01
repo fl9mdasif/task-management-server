@@ -6,5 +6,5 @@ export interface TTask {
   priority: "low" | "medium" | "high";
   deadline: Date;
   isCompleted?: false;
-  authorId: Types.ObjectId;
+  authorId: string;
 }
