@@ -22,6 +22,7 @@ router.post(
   authControllers.loginUser
 );
 
+// changed password
 router.post(
   "/change-password",
   auth(USER_ROLE.user),
